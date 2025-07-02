@@ -15,4 +15,17 @@ export class UserUseCase {
     async getUserProfile(userId: string): Promise<any> {
         return await this.userRepository.getUserProfile(userId);
     }
+
+    async getUserProgress(userId: string): Promise<any> {
+        return await this.userRepository.getUserProgress(userId);
+    }
+
+    async getUserBadges(userId: string): Promise<any> {
+        return await this.userRepository.getUserBadges(userId);
+    }
+
+    async updateUserProgress(userId: string, levelId: number, status: string, score: number): Promise<any> {
+        return await this.userRepository.updateUserProgress(userId, levelId, status, score);
+    }
+
 }
