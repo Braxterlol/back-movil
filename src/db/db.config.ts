@@ -14,6 +14,8 @@ const config = {
 
 const pool = mysql.createPool(config);
 
+export { pool };
+
 export async function query(sql: string, params: any[]) {
 
     try {
@@ -24,6 +26,6 @@ export async function query(sql: string, params: any[]) {
         return result;
     } catch ( error ){
         console.log('hubo un error al crear la conexion', error);
-        return null;
+        throw error;
     }   
 }
