@@ -12,25 +12,25 @@ const userUseCase = new UserUseCase(userMysqlRepository);
 
 export class GetLevelsController {
     static async getLevels(req: Request, res: Response): Promise<any> {
-        const { world_id } = req.body;
-        const levels = await levelsUseCase.getLevels(world_id);
+        const { world_id } = req.params;
+        const levels = await levelsUseCase.getLevels(Number(world_id));
         res.status(200).json(levels);
     }
 
     static async getLevelContent(req: Request, res: Response): Promise<any> {
-        const { level_id } = req.body;
-        const { userId } = req.params;
+        const { userId, level_id } = req.params;
         try {
             const userProgress = await userUseCase.getUserProgress(userId); 
             const hasAccess = userProgress && userProgress.some((progress: any) => 
-                progress.level_id === level_id && 
+                progress.level_id === Number(level_id) && 
                 (progress.status === 'unlocked' || progress.status === 'completed')
             );
+            
             if (!hasAccess) {
                 return res.status(403).json({ message: 'No tienes acceso a este nivel' });
             }
             
-            const levelContent = await levelsUseCase.getLevelContent(level_id);
+            const levelContent = await levelsUseCase.getLevelContent(Number(level_id));
             
             res.status(200).json({
                 success: true,
@@ -47,9 +47,9 @@ export class GetLevelsController {
     }
 
     static async checkExerciseAnswer(req: Request, res: Response): Promise<any> {
-        const { exercise_id, option_id } = req.body;
+        const { exercise_id, option_id } = req.params;
         try{
-            const answer = await levelsUseCase.checkExerciseAnswer(exercise_id, option_id);
+            const answer = await levelsUseCase.checkExerciseAnswer(Number(exercise_id), Number(option_id));
             let score = 0;
             let message = "";
 

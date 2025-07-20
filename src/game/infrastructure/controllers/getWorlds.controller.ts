@@ -7,10 +7,10 @@ const worldsUseCase = new WorldsUseCase(mysqlRepository);
 
 export class GetWorldsController {
     static async getWorlds(req: Request, res: Response): Promise<any> {
-        const { language_id } = req.body;
+        const { language_id } = req.params;
         
         try {
-            const worlds = await worldsUseCase.getWorld(language_id);
+            const worlds = await worldsUseCase.getWorld(Number(language_id));
             
             if (!worlds || worlds.length === 0) {
                 return res.status(404).json({
